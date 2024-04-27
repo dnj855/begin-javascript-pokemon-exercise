@@ -20,7 +20,8 @@ Notre Pokemon a aussi les méthodes suivantes :
 
 - **getHealth** retourne la vie du pokemon avec des 🟥 pour chaque 10% de PV perdu et des 🟩 pour chaque 10% de PV restant.
 
-###**Attack** : représente une attaque
+### **Attack** : représente une attaque
+
 Elle possède un nom, un power et une stabilité !
 
 Elle possède comme méthodes :
