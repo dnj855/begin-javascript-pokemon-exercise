@@ -45,9 +45,9 @@ class Pokemon {
 
     for (let i = 0; i < segments; i++) {
       if (this.currentHealth > i * healthPerSegment) {
-        healthBar += "";
+        healthBar += "🟩";
       } else {
-        healthBar += "";
+        healthBar += "🟥";
       }
     }
     return healthBar;
@@ -121,21 +121,16 @@ class Game {
   }
 
   logBattle(userPokemon, computerPokemon) {
-    console.log("");
-    console.log("Battle :");
-    console.log("");
-    console.log(`${userPokemon.getHealth()}`);
-    console.log(
-      `${userPokemon.name} ${userPokemon.emoji} - Health : ${userPokemon.currentHealth}`
-    );
-    console.log("");
-    console.log("⚡️VS ⚡️");
-    console.log("");
-    console.log(`${computerPokemon.getHealth()}`);
-    console.log(
-      `${computerPokemon.name} ${computerPokemon.emoji} - Health : ${computerPokemon.currentHealth}`
-    );
-    console.log("");
+    console.log(`
+Battle :
+${userPokemon.getHealth()}
+${userPokemon.name} ${userPokemon.emoji} - Health : ${userPokemon.currentHealth}
+⚡️VS ⚡️
+${computerPokemon.getHealth()}
+${computerPokemon.name} ${computerPokemon.emoji} - Health : ${
+      computerPokemon.currentHealth
+    }
+`);
   }
 
   playerAttack(pokemon, attacks) {
