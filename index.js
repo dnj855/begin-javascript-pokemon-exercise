@@ -125,12 +125,16 @@ class Game {
     console.log("Battle :");
     console.log("");
     console.log(`${userPokemon.getHealth()}`);
-    console.log(`${userPokemon.name} ${userPokemon.emoji}`);
+    console.log(
+      `${userPokemon.name} ${userPokemon.emoji} - Health : ${userPokemon.currentHealth}`
+    );
     console.log("");
     console.log("⚡️VS ⚡️");
     console.log("");
     console.log(`${computerPokemon.getHealth()}`);
-    console.log(`${computerPokemon.name} ${computerPokemon.emoji}`);
+    console.log(
+      `${computerPokemon.name} ${computerPokemon.emoji} - Health : ${computerPokemon.currentHealth}`
+    );
     console.log("");
   }
 
@@ -157,27 +161,68 @@ class Game {
     return attacks[playerAttack - 1];
   }
 
-  battle(userPokemon, computerPokemon) {
+  /**
+   *
+   * @param {Number} interval
+   * @returns
+   */
+  countDown(interval = 5) {
+    return new Promise((resolve) => {
+      let intervalSecs = interval;
+      const countDownInterval = setInterval(() => {
+        console.log(`${intervalSecs}...`);
+        if (intervalSecs === 0) {
+          clearInterval(countDownInterval);
+          resolve(); // Résout la promesse quand le compte à rebours est terminé
+        }
+        intervalSecs--;
+      }, 1000);
+    });
+  }
+
+  async battle(userPokemon, computerPokemon) {
     this.logBattle(userPokemon, computerPokemon);
     const playerAttack = this.playerAttack(userPokemon, userPokemon.attacks);
     const computerAttack = computerPokemon.randomAttack();
+
+    // Affichage des attaques
+    console.log(`👊 ${userPokemon.name} uses ${playerAttack.name}`);
+    console.log(`❌ ${computerPokemon.name} uses ${computerAttack.name}`);
+
+    // Attente de la fin du compte à rebours avant de calculer les dégâts
+    await this.countDown(5);
+
+    // Calcul des dégâts après le compte à rebours
     const userDamage = computerAttack.performAttack();
     const computerDamage = playerAttack.performAttack();
+
     console.log(
-      `👊 The attack ${playerAttack.name} made ${computerDamage} damage to ${computerPokemon.name}.\n❌ The attack ${computerAttack.name} made ${userDamage} damage to ${userPokemon.name}.`
+      `👊 The attack ${playerAttack.name} made ${computerDamage} damage to ${computerPokemon.name}.`
     );
+    console.log(
+      `❌ The attack ${computerAttack.name} made ${userDamage} damage to ${userPokemon.name}.`
+    );
+
     userPokemon.currentHealth -= userDamage;
     computerPokemon.currentHealth -= computerDamage;
+
+    if (userPokemon.currentHealth <= 0) {
+      console.log(`You lost! ${userPokemon.name} is knocked out.`);
+    } else if (computerPokemon.currentHealth <= 0) {
+      console.log(`You won! ${computerPokemon.name} is knocked out.`);
+    }
   }
 
-  play() {
+  async play() {
     console.log("Welcome to Pokemon Game !");
     const userChoice = this.userChoice();
     const availablePokemons = this.pokemons.filter((_, i) => userChoice !== i);
     const userPokemon = this.pokemons[userChoice];
     const computerPokemon =
       availablePokemons[Math.floor(Math.random() * availablePokemons.length)];
-    this.battle(userPokemon, computerPokemon);
+    while (userPokemon.currentHealth > 0 && computerPokemon.currentHealth > 0) {
+      await this.battle(userPokemon, computerPokemon);
+    }
   }
 }
 
