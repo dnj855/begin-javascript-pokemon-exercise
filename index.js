@@ -21,13 +21,13 @@ class Pokemon {
   }
 
   logAttack() {
-    let i = 1;
-    for (let attack of this.attacks) {
+    this.attacks.forEach((attack, index) => {
       console.log(
-        `${i}. ${attack.name} - Power ⚡️: ${attack.power} - Stability 💥 : ${attack.stability}`
+        `${index + 1}. ${attack.name} - Power ⚡️: ${
+          attack.power
+        } - Stability 💥 : ${attack.stability}`
       );
-      i++;
-    }
+    });
   }
 
   logPokemon(attacks = false) {
@@ -45,9 +45,9 @@ class Pokemon {
 
     for (let i = 0; i < segments; i++) {
       if (this.currentHealth > i * healthPerSegment) {
-        healthBar += "🟩";
+        healthBar += "";
       } else {
-        healthBar += "🟥";
+        healthBar += "";
       }
     }
     return healthBar;
@@ -88,13 +88,13 @@ class Game {
   }
 
   logPokemons() {
-    let i = 1;
-    for (let pokemon of this.pokemons) {
+    this.pokemons.forEach((pokemon, index) => {
       console.log(
-        `${i}. ${pokemon.name} ${pokemon.emoji} - Health : ${pokemon.currentHealth}`
+        `${index + 1}. ${pokemon.name} ${pokemon.emoji} - Health : ${
+          pokemon.currentHealth
+        }`
       );
-      i++;
-    }
+    });
   }
 
   userChoice() {
